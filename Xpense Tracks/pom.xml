@@ -54,6 +54,11 @@
             <version>3.4.0</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.mongodb</groupId>-->
+<!--            <artifactId>mongodb-driver-sync</artifactId>-->
+<!--            <version>4.10.0</version> &lt;!&ndash; Check for the latest version &ndash;&gt;-->
+<!--        </dependency>-->
 
     </dependencies>
 </project>
