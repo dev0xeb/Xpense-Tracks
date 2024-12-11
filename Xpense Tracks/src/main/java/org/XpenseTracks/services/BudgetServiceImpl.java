@@ -18,6 +18,16 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public BudgetResponse createBudget(BudgetRequest budgetRequest) {
+        if(budgetRequest.getUserId() == null || budgetRequest.getUserId().isEmpty()){
+            throw new IllegalArgumentException("Invalid user id");
+        }
+        if(budgetRequest.getBudgetAmount() == null || budgetRequest.getBudgetAmount().compareTo(BigDecimal.ZERO) < 0) {
+            throw new NullPointerException("Budget amount must be greater than zero");
+        }
+        Optional<Budget> getBudgetId = budgetRepo.findByUserId(budgetRequest.getUserId());
+        if (getBudgetId.isPresent()) {
+            throw new IllegalArgumentException("Budget already exists");
+        }
         Budget budget = new Budget();
         budget.setUserId(budgetRequest.getUserId());
         budget.setBudgetAmount(budgetRequest.getBudgetAmount() != null ? budgetRequest.getBudgetAmount() : BigDecimal.ZERO);

@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface BudgetRepo extends MongoRepository<Budget, String> {
-//    Optional<Budget> findById(String id);
+    Optional<Budget> findByUserId(String UserId);
 }

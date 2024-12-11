@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
     public void testBudgetDefaultValueAtCreationIsZero() {
        BudgetRequest budgetRequest = new BudgetRequest();
        budgetRequest.setUserId("1");
+       budgetRequest.setBudgetAmount(BigDecimal.ZERO);
 
        BudgetResponse budgetResponse = budgetService.createBudget(budgetRequest);
        assertNotNull(budgetResponse);
@@ -77,5 +78,65 @@ import static org.junit.jupiter.api.Assertions.*;
         BudgetResponse budgetResponse = budgetService.createBudget(budgetRequest);
         budgetService.deleteBudget(budgetResponse.getBudgetId());
         assertFalse(budgetRepo.existsById(budgetResponse.getBudgetId()));
+    }
+
+    @Test
+    public void testCreateBudgetWithNullValue(){
+        BudgetRequest budgetRequest = new BudgetRequest();
+        budgetRequest.setUserId("1");
+
+        Exception nullValueException = assertThrows(NullPointerException.class, ()-> {
+            budgetService.createBudget(budgetRequest);
+        });
+       String exceptionMessage = "Budget amount must be greater than zero";
+       String actualMessage = nullValueException.getMessage();
+
+       assertEquals(exceptionMessage, actualMessage);
+    }
+
+    @Test
+    public void testCreatBudgetWithEmptyUserId(){
+        BudgetRequest budgetRequest = new BudgetRequest();
+        budgetRequest.setUserId("");
+        budgetRequest.setBudgetAmount(BigDecimal.ZERO);
+
+        Exception nullIdException = assertThrows(IllegalArgumentException.class, ()-> {
+            budgetService.createBudget(budgetRequest);
+        });
+
+        String exceptionMessage = "Invalid user id";
+        String actualMessage = nullIdException.getMessage();
+        assertEquals(exceptionMessage, actualMessage);
+    }
+
+    @Test
+    public void testCreateBudgetWithNegativeAmount(){
+        BudgetRequest budgetRequest = new BudgetRequest();
+        budgetRequest.setUserId("1");
+        budgetRequest.setBudgetAmount(BigDecimal.valueOf(-1000));
+
+        Exception negativeAmountException = assertThrows(NullPointerException.class, ()-> {
+            budgetService.createBudget(budgetRequest);
+        });
+
+        String exceptionMessage = "Budget amount must be greater than zero";
+        String actualMessage = negativeAmountException.getMessage();
+        assertEquals(exceptionMessage, actualMessage);
+    }
+
+    @Test
+    public void testCreateDuplicateBudget(){
+        BudgetRequest budgetRequest = new BudgetRequest();
+        budgetRequest.setUserId("1");
+        budgetRequest.setBudgetAmount(BigDecimal.valueOf(1000));
+
+        budgetService.createBudget(budgetRequest);
+        Exception duplicateException = assertThrows(IllegalArgumentException.class, ()-> {
+            budgetService.createBudget(budgetRequest);
+        });
+
+        String duplicateExceptionMessage = "Budget already exists";
+        String actualMessage =duplicateException.getMessage();
+        assertEquals(duplicateExceptionMessage, actualMessage);
     }
 }
