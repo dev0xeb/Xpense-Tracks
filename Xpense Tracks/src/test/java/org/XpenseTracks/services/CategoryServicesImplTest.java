@@ -43,7 +43,7 @@ public class CategoryServicesImplTest {
         categoryRequest.setCategoryType(CategoryType.EDUCATION);
 
         CategoryResponse createdCategory = categoryServices.createCategory(categoryRequest);
-        CategoryResponse getCategory = categoryServices.getCatgoryById(createdCategory.getCategoryId());
+        CategoryResponse getCategory = categoryServices.getCategoryById(createdCategory.getCategoryId());
 
         assertEquals(createdCategory.getCategoryId(), getCategory.getCategoryId());
         assertEquals(createdCategory.getCategoryType(), getCategory.getCategoryType());

@@ -39,7 +39,7 @@ public class CategoryServicesImpl implements CategoryServices {
     }
 
     @Override
-    public CategoryResponse getCatgoryById(String CategoryId) {
+    public CategoryResponse getCategoryById(String CategoryId) {
         Optional<Category> getCategory = categoryRepo.findById(CategoryId);
         if (getCategory.isPresent()) {
             Category category = getCategory.get();
